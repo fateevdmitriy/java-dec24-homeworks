@@ -1,13 +1,40 @@
 package ru.otus.java.basic.homeworks.homework3;
 
+import java.util.Scanner;
+
 public class FirstHomeWork {
 
     public static void main(String[] args) {
-        greetings();
-        checkSign(3,-5,2);
-        selectColor();
-        compareNumbers();
-        addOrSubtractAndPrint(33 , 15, true );
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Выберите программу для запуска (от 1 до 5):");
+        int usersChoice = scanner.nextInt();
+
+        if (usersChoice == 1) {
+            greetings();
+        } else {
+            if (usersChoice == 2) {
+                int a = randomInt(10 * usersChoice);
+                int b = randomInt(-10 * usersChoice);
+                int c = randomInt(5 * usersChoice);
+                checkSign(a,b,c);
+            } else {
+                if (usersChoice == 3) {
+                    selectColor();
+                } else {
+                    if (usersChoice == 4) {
+                        compareNumbers();
+                    } else {
+                        if (usersChoice == 5) {
+                            int d = randomInt(15 * usersChoice);
+                            int e = randomInt(-15 * usersChoice);
+                            boolean f = randomInt(10) > 0;
+                            addOrSubtractAndPrint(d,e,f);
+                        }
+                    }
+                }
+            }
+        }
 
     }
 
@@ -27,7 +54,7 @@ public class FirstHomeWork {
 
     public static void selectColor() {
         String[] colors = {"Красный", "Желтый", "Зелёный"};
-        int data = 11;
+        int data = randomInt(30);
         int limit1 = 10;
         int limit2 = 20;
         if (data <= limit1) {
@@ -40,8 +67,8 @@ public class FirstHomeWork {
     }
 
     public static void compareNumbers() {
-        int a = 17;
-        int b = 11;
+        int a = randomInt(100);
+        int b = randomInt(100);
         if (a >= b) {
             System.out.println("a >= b");
         } else {
@@ -57,6 +84,12 @@ public class FirstHomeWork {
             result -= delta;
         }
         System.out.println(result);
+    }
+
+    public static int randomInt(int multiplier) {
+        int result = (int) (Math.random() * multiplier);
+        System.out.println("Random int: "+result);
+        return result;
     }
 
 }
