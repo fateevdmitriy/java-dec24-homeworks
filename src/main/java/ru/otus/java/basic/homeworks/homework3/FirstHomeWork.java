@@ -17,7 +17,7 @@ public class FirstHomeWork {
                 int a = randomInt(10 * usersChoice);
                 int b = randomInt(-10 * usersChoice);
                 int c = randomInt(5 * usersChoice);
-                checkSign(a,b,c);
+                checkSign(a, b, c);
             } else {
                 if (usersChoice == 3) {
                     selectColor();
@@ -29,7 +29,7 @@ public class FirstHomeWork {
                             int d = randomInt(15 * usersChoice);
                             int e = randomInt(-15 * usersChoice);
                             boolean f = randomInt(10) > 0;
-                            addOrSubtractAndPrint(d,e,f);
+                            addOrSubtractAndPrint(d, e, f);
                         }
                     }
                 }
@@ -39,10 +39,13 @@ public class FirstHomeWork {
     }
 
     public static void greetings() {
+
         System.out.println("Hello\nWorld\nfrom\nJava");
+
     }
 
     public static void checkSign(int a, int b, int c) {
+
         String positiveSum = "Сумма положительная";
         String negativeSum = "Сумма отрицательная";
         if (a + b + c >= 0) {
@@ -50,9 +53,11 @@ public class FirstHomeWork {
         } else {
             System.out.println(negativeSum);
         }
+
     }
 
     public static void selectColor() {
+
         String[] colors = {"Красный", "Желтый", "Зелёный"};
         int data = randomInt(30);
         int limit1 = 10;
@@ -64,9 +69,11 @@ public class FirstHomeWork {
         } else {
             System.out.println(colors[2]);
         }
+
     }
 
     public static void compareNumbers() {
+
         int a = randomInt(100);
         int b = randomInt(100);
         if (a >= b) {
@@ -74,9 +81,11 @@ public class FirstHomeWork {
         } else {
             System.out.println("a < b");
         }
+
     }
 
     public static void addOrSubtractAndPrint(int initValue, int delta, boolean increment) {
+
         int result = initValue;
         if (increment) {
             result += delta;
@@ -84,12 +93,15 @@ public class FirstHomeWork {
             result -= delta;
         }
         System.out.println(result);
+
     }
 
     public static int randomInt(int multiplier) {
+
         int result = (int) (Math.random() * multiplier);
-        System.out.println("Random int: "+result);
+        System.out.println("Random int: " + result);
         return result;
+
     }
 
 }
