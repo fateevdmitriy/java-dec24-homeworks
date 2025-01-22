@@ -12,31 +12,24 @@ public class FirstHomeWork {
 
         if (usersChoice == 1) {
             greetings();
-        } else {
-            if (usersChoice == 2) {
-                int a = randomInt(10 * usersChoice);
-                int b = randomInt(-10 * usersChoice);
-                int c = randomInt(5 * usersChoice);
-                checkSign(a, b, c);
-            } else {
-                if (usersChoice == 3) {
-                    selectColor();
-                } else {
-                    if (usersChoice == 4) {
-                        compareNumbers();
-                    } else {
-                        if (usersChoice == 5) {
-                            int d = randomInt(15 * usersChoice);
-                            int e = randomInt(-15 * usersChoice);
-                            boolean f = randomInt(10) > 0;
-                            addOrSubtractAndPrint(d, e, f);
-                        }
-                    }
-                }
-            }
+        } else if (usersChoice == 2) {
+            int a = randomInt(10 * usersChoice);
+            int b = randomInt(-10 * usersChoice);
+            int c = randomInt(5 * usersChoice);
+            checkSign(a, b, c);
+        } else if (usersChoice == 3) {
+            selectColor();
+        } else if (usersChoice == 4) {
+            compareNumbers();
+        } else if (usersChoice == 5) {
+            int d = randomInt(15 * usersChoice);
+            int e = randomInt(-15 * usersChoice);
+            boolean f = randomInt(10) > 4;
+            addOrSubtractAndPrint(d, e, f);
         }
 
     }
+
 
     public static void greetings() {
 
