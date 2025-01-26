@@ -1,4 +1,4 @@
-package ru.otus.java.basic.homeworks.homework4;
+package ru.otus.java.basic.homeworks.homework5;
 
 import java.util.Arrays;
 import java.util.Scanner;
