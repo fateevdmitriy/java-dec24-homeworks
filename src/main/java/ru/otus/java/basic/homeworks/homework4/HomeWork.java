@@ -24,7 +24,7 @@ public class HomeWork {
         // Методы задания со звездочкой:
         sumMultipleArrays(testArray1, testArray2, testArray3);
         findArrayElenetsPointOfBalance(testArray3);
-        checkOrderInArray(testArray4);
+        checkOrderInArray(testArray4); // мли параметр: testArray5 
         inverseArray(testArray4);
     }
 
