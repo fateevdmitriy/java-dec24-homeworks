@@ -20,8 +20,7 @@ public class HomeWork {
         fillOneIntToArray(testArrayToFill, fillValueForArray);
         incEachArrayElement(testArray1, incValueForArray);
         calcMaxSumHalfOfArray(testArray1);
-
-        // Методы задания со звездочкой:
+        
         sumMultipleArrays(testArray1, testArray2, testArray3);
         findArrayElenetsPointOfBalance(testArray3);
         checkOrderInArray(testArray4); // мли параметр: testArray5 
