@@ -87,7 +87,6 @@ public class HomeWork {
         }
     }
     
-    // Реализация методов заданий со звездочкой:
     public static void sumMultipleArrays(int[] array1, int[] array2, int[] array3) {
         System.out.println("Исходный массив_1: " + Arrays.toString(array1));
         System.out.println("Исходный массив_2: " + Arrays.toString(array2));
