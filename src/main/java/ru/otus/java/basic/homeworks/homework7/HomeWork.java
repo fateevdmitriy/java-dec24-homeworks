@@ -5,16 +5,21 @@ import java.util.Arrays;
 public class HomeWork {
 
     public static void main(String[] args) {
-        int[][] testArr1 = {{-3, 9, -5}, {2, -11, 7}, {9, -3, 2}};
-        int[][] testArr2 = {{1, 3, 9, 5, 7, 8}, {3, 5, 2, 11, 7, 1}, {5, 9, 3, 2, 4, 6}, {6, -21, 1, 3, 7, 4}, {4, 15, 1, 6, 2, 11}};
-        System.out.println(sumOfPositiveElements(testArr1));
+        int[][] testArr = {{1, 3, 9, 5, 7, 8}, {3, 5, 2, 11, 7, 1}, {5, 9, 3, 2, 4, -6}, {6, -21, 1, 3, 7, 4}, {4, 15, 1, 6, 2, 11}};
+
+        System.out.println("Сумма положительных элементов массива: "+sumOfPositiveElements(testArr));
         printSquare(10, '*');
-        zeroOutArrayBothDiagonals(testArr2);
-        findMax(testArr2);
-        System.out.println(sumElementsOfSpecifiedArrayRow(1, testArr2));
+        zeroOutBothDiagonalsOfArray(testArr);
+        System.out.println("Максимальный элемент массива: "+findMax(testArr));
+        System.out.println("Сумма элементов указанной строки массива: " + sumElementsOfSpecifiedArrayRow(2, testArr));
     }
 
     public static int sumOfPositiveElements(int[][] inArray2d) {
+        System.out.println("Исходный массив: " + Arrays.deepToString(inArray2d));
+        if (inArray2d.length == 0) {
+            System.out.println("Невозможно найти сумму позитивных элементов массива, т.к. массив пуст.");
+            return 0;
+        }
         int sumOfPositiveElements = 0;
         for (int i = 0; i < inArray2d.length; i++) {
             for (int j = 0; j < inArray2d[i].length; j++) {
@@ -43,11 +48,12 @@ public class HomeWork {
         }
     }
 
-    public static void zeroOutArrayBothDiagonals(int[][] squareArray) {
+    public static void zeroOutBothDiagonalsOfArray(int[][] squareArray) {
         System.out.println("Исходный массив: " + Arrays.deepToString(squareArray));
+        System.out.println("Массив с зануленными диагоналями: ");
         for (int i = 0; i < squareArray.length; i++) {
             for (int j = 0; j < squareArray.length; j++) {
-                if (j == i || j == squareArray.length - i - 1) {
+                if (j == i || j == squareArray.length - 1 - i) {
                     squareArray[i][j] = 0;
                 }
                 System.out.print(squareArray[i][j] + " ");
@@ -56,10 +62,11 @@ public class HomeWork {
         }
     }
 
-    public static void findMax(int[][] inArray) {
+    public static int findMax(int[][] inArray) {
+        System.out.println("Исходный массив: " + Arrays.deepToString(inArray));
         if (inArray.length == 0) {
             System.out.println("Невозможно найти максимальный элемент массива, т.к. массив пуст.");
-            return;
+            return 0;
         }
         int maxElement = inArray[0][0];
         for (int i = 0; i < inArray.length; i++) {
@@ -69,19 +76,22 @@ public class HomeWork {
                 }
             }
         }
-        System.out.println("Максимальный элемент массива: " + maxElement);
+        return maxElement;
     }
 
     public static int sumElementsOfSpecifiedArrayRow(int rowToSum, int[][] calcArray) {
-        System.out.println("Исходный массив: " + Arrays.deepToString(calcArray));
-        if (rowToSum < calcArray.length) {
+        System.out.println("Заданный индекс строки массива: "+rowToSum+"\nИсходный массив: " + Arrays.deepToString(calcArray));
+        if (rowToSum >= calcArray.length) {
+            System.out.println("Невозможно найти сумму элементов строки массива с индексом = " + rowToSum + ", т.к. массив максимальный " +
+                    "индекс строки в массиве = " + (calcArray.length - 1));
+            return -1;
+        } else {
             int rowSum = calcArray[rowToSum][0];
             for (int j = 1; j < calcArray[rowToSum].length; j++) {
                 rowSum += calcArray[rowToSum][j];
             }
             return rowSum;
         }
-        return -1;
     }
 
 }
