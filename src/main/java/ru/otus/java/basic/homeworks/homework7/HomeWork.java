@@ -6,7 +6,7 @@ public class HomeWork {
 
     public static void main(String[] args) {
         int[][] testArr = {{1, 3, 9, 5, 7, 8}, {3, 5, 2, 11, 7, 1}, {5, 9, 3, 2, 4, -6}, {6, -21, 1, 3, 7, 4}, {4, 15, 1, 6, 2, 11}};
-
+        
         System.out.println("Сумма положительных элементов массива: "+sumOfPositiveElements(testArr));
         printSquare(10, '*');
         zeroOutBothDiagonalsOfArray(testArr);
@@ -15,12 +15,12 @@ public class HomeWork {
     }
 
     public static int sumOfPositiveElements(int[][] inArray2d) {
+        int sumOfPositiveElements = 0;
         System.out.println("Исходный массив: " + Arrays.deepToString(inArray2d));
         if (inArray2d.length == 0) {
             System.out.println("Невозможно найти сумму позитивных элементов массива, т.к. массив пуст.");
-            return 0;
+            return sumOfPositiveElements;
         }
-        int sumOfPositiveElements = 0;
         for (int i = 0; i < inArray2d.length; i++) {
             for (int j = 0; j < inArray2d[i].length; j++) {
                 if (inArray2d[i][j] > 0) {
@@ -80,10 +80,10 @@ public class HomeWork {
     }
 
     public static int sumElementsOfSpecifiedArrayRow(int rowToSum, int[][] calcArray) {
-        System.out.println("Заданный индекс строки массива: "+rowToSum+"\nИсходный массив: " + Arrays.deepToString(calcArray));
+        System.out.println("Заданный индекс строки массива: " + rowToSum + "\nИсходный массив: " + Arrays.deepToString(calcArray));
         if (rowToSum >= calcArray.length) {
-            System.out.println("Невозможно найти сумму элементов строки массива с индексом = " + rowToSum + ", т.к. массив максимальный " +
-                    "индекс строки в массиве = " + (calcArray.length - 1));
+            System.out.println("Невозможно найти сумму элементов строки массива с индексом " + rowToSum + ", т.к. заданный индекс больше " +
+                    "максимального индекса строки в массиве.");
             return -1;
         } else {
             int rowSum = calcArray[rowToSum][0];
