@@ -5,7 +5,12 @@ public class HomeWork {
     public static void main(String[] args) {
 
         int ageLimit = 40;
-
+        int boxSize = 12;
+        String boxColor1 = "белый";
+        String boxColor2 = "зеленый";
+        String thing1 = "яблоко";
+        String thing2 = "груша";
+                
         User[] users = {
                 new User("Никулин", "Юрий", "Владимирович", 1991, "nikulinjv@mail.ru"),
                 new User("Вицин", "Георгий", "Михайлович", 1988, "vitsingm@mail.ru"),
@@ -25,22 +30,23 @@ public class HomeWork {
             }
         }
 
-        Box box1 = new Box(12, "белый");
+        Box box1 = new Box(boxSize, boxColor1);
         box1.info();
         box1.setColor("");
-        box1.setColor("зеленый");
+        box1.setColor(boxColor2);
         box1.close();
         box1.info();
         box1.putInside("");
-        box1.putInside("яблоко");
+        box1.putInside(thing1);
         box1.open();
-        box1.putInside("яблоко");
+        box1.putInside(thing1);
         box1.info();
         box1.close();
         box1.getOutside();
         box1.open();
         box1.getOutside();
-        box1.putInside("груша");
+        box1.info();
+        box1.putInside(thing2);
         box1.close();
         box1.info();
     }
