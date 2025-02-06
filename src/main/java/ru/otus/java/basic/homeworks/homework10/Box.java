@@ -78,7 +78,7 @@ public class Box {
     }
 
     public void info() {
-        System.out.print("Инфо о коробке: цвет: " + getColor() + ", размер: " + getSize());
+        System.out.print("Инфо о коробке: цвет: " + getColor() + ", размер: " + getSize() + " см");
         if (isOpened()) {
             System.out.print(", открыта");
         } else {

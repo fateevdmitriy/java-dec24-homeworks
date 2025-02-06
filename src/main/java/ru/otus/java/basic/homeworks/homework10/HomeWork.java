@@ -3,14 +3,13 @@ package ru.otus.java.basic.homeworks.homework10;
 public class HomeWork {
 
     public static void main(String[] args) {
-
         int ageLimit = 40;
-        int boxSize = 12;
+        int boxSizeSm = 12;
         String boxColor1 = "белый";
         String boxColor2 = "зеленый";
         String thing1 = "яблоко";
         String thing2 = "груша";
-                
+        
         User[] users = {
                 new User("Никулин", "Юрий", "Владимирович", 1991, "nikulinjv@mail.ru"),
                 new User("Вицин", "Георгий", "Михайлович", 1988, "vitsingm@mail.ru"),
@@ -30,7 +29,7 @@ public class HomeWork {
             }
         }
 
-        Box box1 = new Box(boxSize, boxColor1);
+        Box box1 = new Box(boxSizeSm, boxColor1);
         box1.info();
         box1.setColor("");
         box1.setColor(boxColor2);
@@ -48,7 +47,7 @@ public class HomeWork {
         box1.info();
         box1.putInside(thing2);
         box1.close();
-        box1.info();
+        box1.info();                 
     }
-
+    
 }
