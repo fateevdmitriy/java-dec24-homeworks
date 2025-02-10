@@ -1,37 +1,34 @@
 package ru.otus.java.basic.homeworks.homework11;
 
 public class Horse extends SwimmingAnimal {
-    static final int horseSwimCost = 4;
+    private static final int swimCost = 4;
 
     public Horse(String name, int endurance, int runSpeed, int swimSpeed) {
-        super(name, endurance, runSpeed, swimSpeed, horseSwimCost);
+        super(name, endurance, runSpeed, swimSpeed, swimCost);
     }
 
-    @Override
-    public int run(int runDistance) {
-        int time = super.run(runDistance);
-        if (time > 0) {
-            System.out.println("Лошадь " + name + " пробежала дистанцию " + runDistance + " м. за " + time + " сек.");
+    public void runWithCheck(int runDistance) {
+        System.out.println("Лошадь " + name + " побежала дистанцию " + runDistance + " м...");
+        int runTime = run(runDistance);
+        if (runTime > 0) {
+            System.out.println("Лошадь " + name + " пробежала за " + runTime + " сек.");
         } else {
-            System.out.println("Выносливости лошади " + name + " не хватило, она устала и не побежала.");
+            System.out.println("Выносливости лошади " + name + " не хватило, она устала и не добежала.");
         }
-        return time;
     }
 
-    @Override
-    public int swim(int swimDistance) {
-        int time = super.swim(swimDistance);
-        if (time > 0) {
-            System.out.println("Лошадь " + name + " проплыла дистанцию " + swimDistance + " м. за " + time + " сек.");
+    public void swimWithCheck(int swimDistance) {
+        System.out.println("Лошадь " + name + " поплыла дистанцию " + swimDistance + " м...");
+        int swimTime = swim(swimDistance);
+        if (swimTime > 0) {
+            System.out.println("Лошадь " + name + " проплыла за " + swimTime + " сек.");
         } else {
-            System.out.println("Выносливости лошади " + name + " не хватило, она устала и не поплыла.");
+            System.out.println("Выносливости лошади " + name + " не хватило, она устала и не доплыла.");
         }
-        return time;
     }
 
     @Override
     public void info() {
-        System.out.println("Инфо: лошаддь по кличке " + name + ", скорость бега " + runSpeed + " м/с, скорость плавания " + swimSpeed +
-                " м/c, остаток выносливости " + endurance + " у.е.");
+        System.out.println("Инфо: лошаддь " + name + ", выносливость " + endurance + " ед., скорость бега " + runSpeed + " м/с, скорость плавания " + swimSpeed + " м/c, затраты на бег " + runCost + " ед/м., затраты на плавание " + swimCost + " ед/м.");
     }
 }

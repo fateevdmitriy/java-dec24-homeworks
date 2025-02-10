@@ -5,20 +5,19 @@ public class Cat extends Animal {
         super(name, endurance, runSpeed);
     }
 
-    @Override
-    public int run(int runDistance) {
-        int time = super.run(runDistance);
-        if (time >= 0) {
-            System.out.println("Кот " + name + " пробежал дистанцию " + runDistance + " м. за " + time + " сек.");
+    public void runWithCheck(int runDistance) {
+        System.out.println("Кот " + name + " побежал дистанцию " + runDistance + " м...");
+        int runTime = run(runDistance);
+        if (runTime >= 0) {
+            System.out.println("Кот " + name + " пробежал за " + runTime + " сек.");
         } else {
-            System.out.println("Выносливости кота " + name + " не хватило, он устал и не побежал.");
+            System.out.println("Выносливости кота " + name + " не хватило, он устал и не добежал.");
         }
-        return time;
     }
 
     @Override
     public void info() {
-        System.out.println("Инфо: кот с именем " + name + ", скорость бега " + runSpeed + " м/c, остаток выносливости " + endurance +
-                " у.е.");
+        System.out.println("Инфо: кот " + name + ", выносливость " + endurance + " ед., скорость бега " + runSpeed + " м/c, затраты на " +
+                "бег " + runCost + " ед/м.");
     }
 }
