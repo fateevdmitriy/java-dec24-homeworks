@@ -1,12 +1,8 @@
 package ru.otus.java.basic.homeworks.homework11.animals;
 
 public abstract class SwimmingAnimal extends Animal {
-    private int swimSpeed;
-    private int swimCost;
-
-    public int getSwimSpeed() {
-        return swimSpeed;
-    }
+    int swimSpeed;
+    int swimCost;
     
     public SwimmingAnimal(String name, int endurance, int runSpeed, int swimSpeed, int swimCost) {
         super(name, endurance, runSpeed);
@@ -15,12 +11,11 @@ public abstract class SwimmingAnimal extends Animal {
     }
 
     public int swim(int distance) {
-        int endur = getEndurance();
-        endur -= distance * swimCost;
-        if (endur >= 0) {
+        endurance -= distance * swimCost;
+        if (endurance >= 0) {
             return distance / swimSpeed;
         }
-        setEndurance(0);
+        endurance = 0;
         return -1;
     }
 }
