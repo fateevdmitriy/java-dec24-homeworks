@@ -1,5 +1,9 @@
 package ru.otus.java.basic.homeworks.homework11;
 
+import ru.otus.java.basic.homeworks.homework11.animals.Cat;
+import ru.otus.java.basic.homeworks.homework11.animals.Dog;
+import ru.otus.java.basic.homeworks.homework11.animals.Horse;
+
 public class HomeWork {
     public static void main(String[] args) {
         String catName1 = "Барсик";
