@@ -15,11 +15,10 @@ public class Homework {
         };
         
         for (int i = 0; i < catArr.length; i++) {
-            str.append("\n").append(plate.info());
-            str.append(catArr[i].info());
+            str.append("\n").append(plate.info()).append(catArr[i].info());
             for (int j = 0; j < 2; j++ ) {
                 eatResult = catArr[i].tryToEat(plate);
-                str.append("Кот ").append(catArr[i].name);
+                str.append("Кот ").append(catArr[i].getName());
                 if (eatResult) {
                     str.append(" покушал успешно.\n");
                     break;
@@ -38,4 +37,3 @@ public class Homework {
         System.out.println(str);
     }
 }
-    
