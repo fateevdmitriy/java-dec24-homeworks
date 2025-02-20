@@ -5,15 +5,13 @@ public enum Locality {
     PLAIN("равнина"),
     SWAMP("болото");
 
-    private String name;
+    private final String type;
 
-    Locality(String name) {
-        this.name = name;
+    Locality(String type) {
+        this.type = type;
     }
-    
-    public String getName() {
-        return name;
+
+    public String getType() {
+        return type;
     }
-    
-    
 }

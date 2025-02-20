@@ -1,26 +1,45 @@
 package ru.otus.java.basic.homeworks.homework13.Moveable.Transport;
 
-import ru.otus.java.basic.homeworks.homework13.Moveable.Human;
+import ru.otus.java.basic.homeworks.homework13.Moveable.Locality;
 
 public enum TransportType {
-    CAR("автомобиль",3),
-    ALLTERRAIN("внедорожник",4),
-    HORSE("лошадь",2),
-    BYCICLE("велосипед", 0);
+    CAR("автомобиль", "бензина", 3, new Locality[]{Locality.FOREST, Locality.SWAMP}),
+    ALLTERRAIN("вездеход", "бензина", 4),
+    HORSE("лошадь", "сил", 2, new Locality[]{Locality.SWAMP}),
+    BYCICLE("велосипед", "сил", 0, new Locality[]{Locality.SWAMP});
 
-    private String name;
-    private int consumption;
-    
-    TransportType(String name, int consumption) {
+    private final String name;
+    private final String resource;
+    private final int consumption;
+    private final Locality[] forbiddenLocalities;
+
+    TransportType(String name, String resource, int consumption) {
         this.name = name;
+        this.resource = resource;
         this.consumption = consumption;
+        this.forbiddenLocalities = new Locality[]{};
+    }
+
+    TransportType(String name, String resource, int consumption, Locality[] forbiddenLocalities) {
+        this.name = name;
+        this.resource = resource;
+        this.consumption = consumption;
+        this.forbiddenLocalities = forbiddenLocalities;
     }
 
     public String getName() {
         return name;
     }
 
+    public String getResource() {
+        return resource;
+    }
+
     public int getConsumption() {
         return consumption;
+    }
+
+    public Locality[] getForbiddenLocalities() {
+        return forbiddenLocalities;
     }
 }

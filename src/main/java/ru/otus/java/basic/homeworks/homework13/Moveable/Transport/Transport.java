@@ -1,54 +1,98 @@
 package ru.otus.java.basic.homeworks.homework13.Moveable.Transport;
 
-import ru.otus.java.basic.homeworks.homework13.Moveable.Human;
-import ru.otus.java.basic.homeworks.homework13.Moveable.Locality;
 import ru.otus.java.basic.homeworks.homework13.Moveable.Moving;
+import ru.otus.java.basic.homeworks.homework13.Moveable.Locality;
+import ru.otus.java.basic.homeworks.homework13.Moveable.Human;
 
 public abstract class Transport implements Moving {
     TransportType type;
     int energy;
-    int consumption;
     Human driver;
+
+    public Transport(TransportType type) {
+        this.type = type;
+    }
 
     public Transport(TransportType type, int energy) {
         this.type = type;
         this.energy = energy;
-        this.consumption = type.getConsumption() > 0 ? type.getConsumption() : Human.WALK_COST;
-    }
-
-    public void setDriver(Human driver) {
-        this.driver = driver;
     }
 
     public TransportType getType() {
         return type;
     }
 
-    boolean isAllowedLocality(Locality locality, Locality[] forbiddenLocalities) {
-        for (Locality loc : forbiddenLocalities) {
-            if (loc.equals(locality)) {
-                return false;
-            }
-        }
-        return true;
+    public boolean hasDriver() {
+        return this.driver != null;
     }
 
-    @Override
-    public boolean move(int distance, Locality locality) {
-        System.out.println("Транспорт " + type.getName() + " начал передвигаться по местности " + locality.getName() + " на расстояние " + distance + " м.");
-        if (driver == null) {
-            System.out.println("Передвижение транспорта не выполнено, не двигается без водителя.");
-            return false;
+    public void setDriver(Human driver) {
+        this.driver = driver;
+    }
+
+    public void removeDriver() {
+        if (hasDriver()) {
+            this.driver = null;
         }
-        energy -= distance * consumption;
+    }
+
+    public boolean burnEnergy(int distance) {
+        energy -= distance * type.getConsumption();
         if (energy >= 0) {
-            System.out.println("Передвижение транспорта успешно выполнено.");
             return true;
         } else {
-            System.out.println("Передвижение не выполнено, не хватило ресурсов.");
             energy = 0;
             return false;
         }
     }
-}
 
+
+    boolean isForbiddenLocality(Locality locality, Locality[] forbiddenLocalities) {
+        for (Locality loc : forbiddenLocalities) {
+            if (loc.equals(locality)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean move(int distance, Locality locality) {
+        System.out.println("Транспорт " + type.getName() + (hasDriver() ? " под управлением " + driver.getName() : " без водителя") +
+                " получил команду двигаться по местности " + locality.getType() + " на расстояние " + distance + " км.");
+        if (isForbiddenLocality(locality, type.getForbiddenLocalities())) {
+            System.out.println("Транспорт " + type.getName() + " не может передвигаться по местности " + locality.getType() + ".");
+            return false;
+        }
+        if (!hasDriver()) {
+            System.out.println("Передвижение транспорта без водителя невозможно.");
+            return false;
+        }
+        if (type.getConsumption() > 0) {
+            if (burnEnergy(distance)) {
+                System.out.println("Передвижение транспорта успешно выполнено, у него осталось " + type.getResource() + " " + energy + ".");
+                return true;
+            } else {
+                System.out.println("Передвижение не завершено, не хватило " + type.getResource() + ".");
+                return false;
+            }
+        } else if (type.getConsumption() == 0) {
+            if (driver.expendEnergy(distance)) {
+                System.out.println("Передвижение транспорта успешно выполнено силами водителя, у его водителя осталось " + Human.RESOURCE +
+                        " " + driver.getEnergy() + ".");
+                return true;
+            } else {
+                System.out.println("Передвижение не завершено, у его водителя не хватило " + Human.RESOURCE + ".");
+                return false;
+            }
+        } else {
+            System.out.println("Передвижение не выполнено, расход ресурсов на передвижение не может иметь отрицательное значение.");
+            return false;
+        }
+    }
+
+    public void info() {
+        System.out.println("Инфо: транспорт " + type.getName() + (hasDriver() ? " под управлением " + driver.getName() : " без " +
+                "водителя") + ", запас " + type.getResource() + " " + energy + ", расход " + type.getResource() + " на км. " + type.getConsumption() + ".");
+    }
+}
