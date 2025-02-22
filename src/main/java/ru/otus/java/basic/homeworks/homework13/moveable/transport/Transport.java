@@ -1,8 +1,8 @@
-package ru.otus.java.basic.homeworks.homework13.Moveable.Transport;
+package ru.otus.java.basic.homeworks.homework13.moveable.transport;
 
-import ru.otus.java.basic.homeworks.homework13.Moveable.Moving;
-import ru.otus.java.basic.homeworks.homework13.Moveable.Locality;
-import ru.otus.java.basic.homeworks.homework13.Moveable.Human;
+import ru.otus.java.basic.homeworks.homework13.moveable.Moving;
+import ru.otus.java.basic.homeworks.homework13.moveable.Locality;
+import ru.otus.java.basic.homeworks.homework13.moveable.Human;
 
 public abstract class Transport implements Moving {
     TransportType type;
@@ -40,16 +40,14 @@ public abstract class Transport implements Moving {
         energy -= distance * type.getConsumption();
         if (energy >= 0) {
             return true;
-        } else {
-            energy = 0;
-            return false;
-        }
+        } 
+        energy = 0;
+        return false;
     }
-
-
-    boolean isForbiddenLocality(Locality locality, Locality[] forbiddenLocalities) {
-        for (Locality loc : forbiddenLocalities) {
-            if (loc.equals(locality)) {
+    
+    boolean isForbiddenLocality(Locality locality) {
+        for (Locality loc : type.getForbiddenLocalities()) {
+            if (loc == locality) {
                 return true;
             }
         }
@@ -60,7 +58,7 @@ public abstract class Transport implements Moving {
     public boolean move(int distance, Locality locality) {
         System.out.println("Транспорт " + type.getName() + (hasDriver() ? " под управлением " + driver.getName() : " без водителя") +
                 " получил команду двигаться по местности " + locality.getType() + " на расстояние " + distance + " км.");
-        if (isForbiddenLocality(locality, type.getForbiddenLocalities())) {
+        if (isForbiddenLocality(locality)) {
             System.out.println("Транспорт " + type.getName() + " не может передвигаться по местности " + locality.getType() + ".");
             return false;
         }

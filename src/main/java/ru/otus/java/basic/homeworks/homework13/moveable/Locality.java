@@ -1,4 +1,4 @@
-package ru.otus.java.basic.homeworks.homework13.Moveable;
+package ru.otus.java.basic.homeworks.homework13.moveable;
 
 public enum Locality {
     FOREST("густой лес"),

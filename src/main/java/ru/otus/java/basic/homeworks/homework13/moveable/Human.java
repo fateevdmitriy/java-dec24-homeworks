@@ -1,13 +1,13 @@
-package ru.otus.java.basic.homeworks.homework13.Moveable;
+package ru.otus.java.basic.homeworks.homework13.moveable;
 
-import ru.otus.java.basic.homeworks.homework13.Moveable.Transport.Transport;
+import ru.otus.java.basic.homeworks.homework13.moveable.transport.Transport;
 
 public class Human implements Moving {
     public static final int WALK_COST = 1;
     public static final String RESOURCE = "сил";
-    String name;
-    int energy;
-    Transport transport;
+    private final String name;
+    private int energy;
+    private Transport transport;
 
     public Human(String name, int energy) {
         this.name = name;
@@ -21,31 +21,37 @@ public class Human implements Moving {
     public int getEnergy() {
         return energy;
     }
-
-    public void take(Transport transport) {
-        this.transport = transport;
-        transport.setDriver(this);
-        System.out.println("Водитель " + name + " сел на транспорт " + transport.getType().getName() + ".");
-    }
-
-    public void getOut(Transport transport) {
-        this.transport = null;
-        transport.removeDriver();
-        System.out.println("Водитель " + name + " покинул транспорт " + transport.getType().getName() + ".");
-    }
-
+    
     public boolean onTransport() {
         return transport != null;
     }
+    
+    public void take(Transport transport) {
+        if (onTransport()) {
+            getOut();
+        }
+        this.transport = transport;
+        transport.setDriver(this);
+        System.out.println(name + " сел(а) на транспорт " + transport.getType().getName() + ".");
+    }
 
+    public void getOut() {
+        if (onTransport()) {
+            transport.removeDriver();
+            System.out.println("Водитель " + name + " покинул транспорт " + transport.getType().getName() + ".");
+            transport = null;             
+        } else {
+            System.out.println(name + " не находится в транспорте и поэтому не может его покинуть.");
+        }
+    }
+    
     public boolean expendEnergy(int distance) {
         energy -= distance * WALK_COST;
         if (energy >= 0) {
             return true;
-        } else {
-            energy = 0;
-            return false;
-        }
+        } 
+        energy = 0;
+        return false;
     }
 
     @Override

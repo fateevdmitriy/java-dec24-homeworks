@@ -1,4 +1,4 @@
-package ru.otus.java.basic.homeworks.homework13.Moveable.Transport;
+package ru.otus.java.basic.homeworks.homework13.moveable.transport;
 
 public class Car extends Transport {
     public Car(int fuel) {
