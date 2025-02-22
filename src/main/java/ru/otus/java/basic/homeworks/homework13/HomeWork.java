@@ -1,8 +1,8 @@
 package ru.otus.java.basic.homeworks.homework13;
 
-import ru.otus.java.basic.homeworks.homework13.Moveable.Human;
-import ru.otus.java.basic.homeworks.homework13.Moveable.Locality;
-import ru.otus.java.basic.homeworks.homework13.Moveable.Transport.*;
+import ru.otus.java.basic.homeworks.homework13.moveable.Human;
+import ru.otus.java.basic.homeworks.homework13.moveable.Locality;
+import ru.otus.java.basic.homeworks.homework13.moveable.transport.*;
 
 public class HomeWork {
     public static void main(String[] args) {
@@ -21,12 +21,22 @@ public class HomeWork {
         car1.info();
         car1.move(10, Locality.PLAIN);
         man1.take(car1);
+        man1.info();
+        car1.info();
+        man1.take(bycicle1);
+        man1.info();
+        car1.info();
+        bycicle1.info();
+        man1.take(car1);
+        man1.info();
+        bycicle1.info();
+        car1.info();
         car1.move(20, Locality.SWAMP);
         car1.move(20, Locality.FOREST);
         car1.move(20, Locality.PLAIN);
         car1.move(50, Locality.PLAIN);
         car1.info();
-        man1.getOut(car1);
+        man1.getOut();
         car1.info();
         man1.info();
         System.out.println();
@@ -39,7 +49,7 @@ public class HomeWork {
         vehicle1.move(30, Locality.FOREST);
         vehicle1.move(50, Locality.PLAIN);
         vehicle1.info();
-        man2.getOut(vehicle1);
+        man2.getOut();
         vehicle1.info();
         man2.move(500, Locality.PLAIN);
         man2.info();
@@ -52,7 +62,7 @@ public class HomeWork {
         horse1.move(150, Locality.FOREST);
         horse1.move(250, Locality.PLAIN);
         horse1.info();
-        man2.getOut(horse1);
+        man2.getOut();
         man2.info();
         System.out.println();
         man1.info();
@@ -65,9 +75,10 @@ public class HomeWork {
         bycicle1.move(200, Locality.FOREST);
         bycicle1.move(300, Locality.PLAIN);
         bycicle1.info();
-        man1.getOut(bycicle1);
+        man1.getOut();
         man1.info();
         man1.move(100, Locality.SWAMP);
-        man1.info();
+        man1.getOut();
+        man1.info();                 
     }
 }
