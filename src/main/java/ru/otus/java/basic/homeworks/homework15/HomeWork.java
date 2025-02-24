@@ -32,7 +32,7 @@ public class HomeWork {
             for (int j = 0; j < strArr[i].length; j++) {
                 try {
                     arrSum += Integer.parseInt(strArr[i][j]);
-                } catch (Exception e) {
+                } catch (NumberFormatException e) {
                     throw new AppArrayDataException(i + 1, j + 1);
                 }
             }
