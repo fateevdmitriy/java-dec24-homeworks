@@ -13,10 +13,9 @@ public class HomeWork {
         final int MAX_INT = 15;
         final int THRESHOLD_NUM = 5;
         final int REPL = 3;
-        final int INCR = 3;
+        final int INCR = 2;
         final int MIN_AGE = 35;
         final int AVG_AGE = 33;
-
         Employee emp1 = new Employee("Антон", 36);
         Employee emp2 = new Employee("Евгений", 23);
         Employee emp3 = new Employee("Татьяна", 28);
@@ -24,29 +23,32 @@ public class HomeWork {
         Employee emp5 = new Employee("Иван", 44);
         Employee emp6 = new Employee("Сергей", 40);
         List<Employee> empList = new ArrayList<>(Arrays.asList(emp1, emp2, emp3, emp4, emp5, emp6));
-        
-        System.out.println("Массив с набором последовательных значений в указанном диапазоне от " + MIN_INT + " до " + MAX_INT + ": " +
-                            arrayMinMax(MIN_INT, MAX_INT));
 
-        System.out.println("Массив: "+arrayInt1+". Сумма элементов массива больше " + THRESHOLD_NUM + " составляет " + 
-                            arraySumElementsMoreThan(THRESHOLD_NUM, Arrays.asList(4, 7, 0, 13, 5, 9, 2, 6, 1, 10))+".");
-        
+        System.out.println("Массив с набором последовательных значений от " + MIN_INT + " до " + MAX_INT + ": " +
+                arrayMinMax(MIN_INT, MAX_INT));
+
+        System.out.println("Список: " + arrayInt1 + ". Сумма элементов массива > " + THRESHOLD_NUM + " " +
+                "составляет " + arraySumElementsMoreThan(THRESHOLD_NUM, Arrays.asList(4, 7, 0, 13, 5, 9, 2, 6, 1, 10)) + ".");
+
         System.out.println("1. Список в исходном виде: " + arrayInt1);
         arraySetToNum(REPL, arrayInt1);
-        System.out.println("2. Список после перезаписи всех элементов числом " + REPL + ": " + arrayInt1);
+        System.out.println("2. Список после перезаписи всех его элементов числом " + REPL + ": " + arrayInt1);
 
         System.out.println("1. Список в исходном виде: " + arrayInt2);
         arrayIncToNum(INCR, arrayInt2);
-        System.out.println("2. Список после увеличения элементов на число " + INCR + ": " + arrayInt2);        
-        
+        System.out.println("2. Список после увеличения элементов на число " + INCR + ": " + arrayInt2);
+
         System.out.println("Список имен сотрудников: " + String.join(", ", arrayEmpNames(empList)) + ".");
+
         System.out.println("Список имен сотрудников с возрастом от " + MIN_AGE + " лет: " +
                 String.join(", ", arrayEmpNamesByMinAge(MIN_AGE, empList)) + ".");
+
         System.out.println("Превышает ли средний возраст сотрудников из списка значение " + AVG_AGE + ": " +
-                            (isEmpAvgAgeMoreThreshold(AVG_AGE, empList) ? "Да": "Нет")+".");
+                (isEmpAvgAgeMoreThreshold(AVG_AGE, empList) ? "Да" : "Нет") + ".");
+
         Employee yngstEmp = findYoungestEmp(empList);
-        System.out.println("Самый молодолй сотрудник из списка сотруднриков: "+yngstEmp.getName()+", его возраст: "+yngstEmp.getAge()+".");
-        
+        System.out.println("Самый молодой сотрудник из списка сотруднриков: " + yngstEmp.getName() + ", его возраст: " + yngstEmp.getAge() + ".");
+
     }
 
     public static ArrayList<Integer> arrayMinMax(int min, int max) {
@@ -111,7 +113,7 @@ public class HomeWork {
         Employee youngestEmp = empList.get(0);
         for (int i = 1; i < empList.size(); i++) {
             if (empList.get(i).getAge() < youngestEmp.getAge()) {
-                youngestEmp = empList.get(i); 
+                youngestEmp = empList.get(i);
             }
         }
         return youngestEmp;
