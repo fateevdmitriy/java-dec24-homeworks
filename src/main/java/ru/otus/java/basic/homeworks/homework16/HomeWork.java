@@ -7,8 +7,8 @@ import java.util.List;
 public class HomeWork {
 
     public static void main(String[] args) {
-        List<Integer> arrayInt1 = new ArrayList<>(Arrays.asList(4, 7, 0, 13, 5, 9, 2, 6, 1, 10));
-        List<Integer> arrayInt2 = new ArrayList<>(Arrays.asList(1, 12, 6, 18, 0, 2, 8, 4, 9, 14, 19, 22));
+        List<Integer> list1 = new ArrayList<>(Arrays.asList(4, 7, 0, 13, 5, 9, 2, 6, 1, 10));
+        List<Integer> list2 = new ArrayList<>(Arrays.asList(1, 12, 6, 18, 0, 2, 8, 4, 9, 14, 19, 22));
         final int MIN_INT = 5;
         final int MAX_INT = 15;
         final int THRESHOLD_NUM = 5;
@@ -27,16 +27,16 @@ public class HomeWork {
         System.out.println("Массив с набором последовательных значений от " + MIN_INT + " до " + MAX_INT + ": " +
                 arrayMinMax(MIN_INT, MAX_INT));
 
-        System.out.println("Список: " + arrayInt1 + ". Сумма элементов массива > " + THRESHOLD_NUM + " " +
+        System.out.println("Список: " + list1 + ". Сумма элементов массива > " + THRESHOLD_NUM + " " +
                 "составляет " + arraySumElementsMoreThan(THRESHOLD_NUM, Arrays.asList(4, 7, 0, 13, 5, 9, 2, 6, 1, 10)) + ".");
 
-        System.out.println("1. Список в исходном виде: " + arrayInt1);
-        arraySetToNum(REPL, arrayInt1);
-        System.out.println("2. Список после перезаписи всех его элементов числом " + REPL + ": " + arrayInt1);
+        System.out.println("1. Список в исходном виде: " + list1);
+        arraySetToNum(REPL, list1);
+        System.out.println("2. Список после перезаписи всех его элементов числом " + REPL + ": " + list1);
 
-        System.out.println("1. Список в исходном виде: " + arrayInt2);
-        arrayIncToNum(INCR, arrayInt2);
-        System.out.println("2. Список после увеличения элементов на число " + INCR + ": " + arrayInt2);
+        System.out.println("1. Список в исходном виде: " + list2);
+        arrayIncToNum(INCR, list2);
+        System.out.println("2. Список после увеличения элементов на число " + INCR + ": " + list2);
 
         System.out.println("Список имен сотрудников: " + String.join(", ", arrayEmpNames(empList)) + ".");
 
@@ -46,17 +46,19 @@ public class HomeWork {
         System.out.println("Превышает ли средний возраст сотрудников из списка значение " + AVG_AGE + ": " +
                 (isEmpAvgAgeMoreThreshold(AVG_AGE, empList) ? "Да" : "Нет") + ".");
 
-        Employee yngstEmp = findYoungestEmp(empList);
-        System.out.println("Самый молодой сотрудник из списка сотруднриков: " + yngstEmp.getName() + ", его возраст: " + yngstEmp.getAge() + ".");
+        try {
+            Employee youngestEmp = findYoungestEmp(empList);
+            System.out.println("Самый молодой сотрудник из списка сотруднриков: " + youngestEmp.getName() + ", его возраст: " + youngestEmp.getAge() + ".");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Не удалось определить самого молодого сотрудников из списка сотрудников т.к их список пуст.");
+        }
 
     }
 
     public static ArrayList<Integer> arrayMinMax(int min, int max) {
         ArrayList<Integer> arrMinMax = new ArrayList<>();
-        int counter = min;
-        while (counter <= max) {
-            arrMinMax.add(counter);
-            counter++;
+        for (int i = min; i <= max; i++) {
+            arrMinMax.add(i);
         }
         return arrMinMax;
     }
@@ -106,10 +108,13 @@ public class HomeWork {
         for (Employee emp : empList) {
             empAgeSum += emp.getAge();
         }
-        return empAgeSum / empList.size() > threshold;
+        return (double) empAgeSum / empList.size() > threshold;
     }
 
-    public static Employee findYoungestEmp(List<Employee> empList) {
+    public static Employee findYoungestEmp(List<Employee> empList) throws IllegalArgumentException {
+        if (empList.isEmpty()) {
+            throw new IllegalArgumentException("Список сотрудников пуст.");
+        }
         Employee youngestEmp = empList.get(0);
         for (int i = 1; i < empList.size(); i++) {
             if (empList.get(i).getAge() < youngestEmp.getAge()) {
