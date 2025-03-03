@@ -18,21 +18,12 @@ public class PhoneBook {
 
     public void add(String name, String phone) {
         if (phoneBookMap.containsKey(name)) {
-            Set<String> phoneSet = phoneBookMap.get(name);
-            if (phoneSet.contains(phone)) {
-                System.out.println("Номер телефона " + phone + " не добавлен для " + name + ", так как такой номер уже есть для абонента.");
-            } else {
-                phoneSet.add(phone);
-                System.out.println("Номер телефона " + phone + " добавлен для " + name + ".");
-            }
+            addPhoneToSetByName(name, phone);
         } else {
-            Set<String> phoneSet = new HashSet<>();
-            phoneSet.add(phone);
-            phoneBookMap.put(name, phoneSet);
-            System.out.println("Новый абонент " + name + " и номер телефона " + phone + " добавлены.");
+            createPhoneSetByName(name, phone);
         }
     }
-
+    
     public Set<String> find(String name) {
         if (phoneBookMap.containsKey(name)) {
             return phoneBookMap.get(name);
@@ -58,4 +49,23 @@ public class PhoneBook {
     public String containsPhoneNumberWithMsg(String phone) {
         return "Телефон " + phone + (containsPhoneNumber(phone) ? "" : " не") + " найден в телефонной книге.";
     }
+    
+    private void addPhoneToSetByName(String pName, String pNumber) {
+        Set<String> phoneSet = phoneBookMap.get(pName);
+        if (phoneSet.contains(pNumber)) {
+            System.out.println("Номер телефона " + pNumber + " не добавлен для " + pName + ", так как такой номер уже есть для абонента.");
+        } else {
+            phoneSet.add(pNumber);
+            System.out.println("Номер телефона " + pNumber + " добавлен для " + pName + ".");
+        }
+    }
+
+    private void createPhoneSetByName(String pbName, String pbNumber) {
+        Set<String> phoneSet = new HashSet<>();
+        phoneSet.add(pbNumber);
+        phoneBookMap.put(pbName, phoneSet);
+        System.out.println("Новый абонент " + pbName + " и номер телефона " + pbNumber + " добавлены.");
+    }
 }
+
+
