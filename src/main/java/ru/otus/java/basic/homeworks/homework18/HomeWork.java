@@ -14,12 +14,15 @@ public class HomeWork {
         List<Person> personList = Arrays.asList(person1, person2, person3);
         PersonDataBase personDB = new PersonDataBase(personList);
         personDB.add(person4);
-        Long searchedPersonId = 1111L;
+        Long searchedPersonId = 1100L;
         Person foundPerson = personDB.findById(searchedPersonId);
         System.out.println("Поиск персоны в базе данных по id = " + searchedPersonId + " " + 
-                            (foundPerson == null ? "ничего не нашёл." : "нашел персону с именем '" + foundPerson.getName() + "'."));
-        System.out.println("Является ли найденная персона руководителем: " + (personDB.isManager(foundPerson) ? "Да" : "Нет"));
-        System.out.println("Является ли найденная персона исполнителем: " + (personDB.isEmployee(foundPerson.getId()) ? "Да" : "Нет"));
+                            (foundPerson == null ? "никого не нашёл." : "нашел персону с именем '" + foundPerson.getName() + 
+                                    "'."));
+        if (foundPerson != null) {
+            System.out.println("Является ли найденная персона руководителем: " + (personDB.isManager(foundPerson) ? "Да" : "Нет"));
+            System.out.println("Является ли найденная персона исполнителем: " + (personDB.isEmployee(foundPerson.getId()) ? "Да" : "Нет"));    
+        } 
         
         int[] srcArray = {99, 11, 57, 31, 2, 77, 50, 5, 90, 14};
         int arrLength = srcArray.length;
