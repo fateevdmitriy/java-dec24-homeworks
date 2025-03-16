@@ -1,15 +1,17 @@
 package ru.otus.java.basic.homeworks.homework18;
 
 public class Person {
+    private final Long id;
     private final String name;
     private final Position position;
-    private final Long id;
-
-    public Person(String name, Position position, Long id) {
+    
+    public Person(Long id, String name, Position position) {
+        this.id = id;
         this.name = name;
         this.position = position;
-        this.id = id;
     }
+
+    public Long getId() { return id; }
     
     public String getName() {
         return name;
@@ -17,9 +19,5 @@ public class Person {
 
     public Position getPosition() {
         return position;
-    }
-
-    public Long getId() {
-        return id;
     }
 }
