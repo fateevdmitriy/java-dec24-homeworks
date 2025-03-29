@@ -41,7 +41,7 @@ public class HomeWork {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             filename = bufferedReader.readLine();
             if (filename.isEmpty()) {
-                throw new IOException("Имя файла не может быть пустым.");
+                throw new IllegalArgumentException("Имя файла не может быть пустым.");
             }
             File usersFile = new File(filename);
             if (usersFile.exists()) {
