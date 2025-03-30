@@ -8,8 +8,8 @@ import java.net.Socket;
 
 public class Server {
     private static final String CALC_OPERATIONS = "+ - * /";
-    static final int serverPort = 8080;
-
+    private static final int serverPort = 8080;
+    
     public static void main(String[] args) throws IOException {
         ServerSocket socket = new ServerSocket(serverPort);
         System.out.println("Сервер запущен.");

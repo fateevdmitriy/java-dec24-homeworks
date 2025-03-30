@@ -5,14 +5,15 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import ru.otus.java.basic.homeworks.homework20.util.simpleClient;
+import ru.otus.java.basic.homeworks.homework20.util.SimpleClient;
 
 public class Client {
-    static final int serverPort = 8080;
+    private static final int serverPort = 8080;
+    
     public static void main(String[] args) {
         while (true) {
             try (Socket socket = new Socket("localhost", serverPort)) {
-                simpleClient client = new simpleClient(socket.getInputStream(), socket.getOutputStream());
+                SimpleClient client = new SimpleClient(socket.getInputStream(), socket.getOutputStream());
                 String mathOpsStr = client.receiveString();
                 System.out.println("Доступные мат.операции: " + mathOpsStr);
 
@@ -23,7 +24,7 @@ public class Client {
                 Double calcResult = client.receiveDouble();
                 System.out.println("Результат вычислений, полученный от сервера: " + calcResult);
                 
-                System.out.println("\nЕсли хотите завершить соединение выполнение клиентского приложения, введите 'exit'.");
+                System.out.println("\nЕсли хотите завершить выполнение клиентского приложения, введите 'exit'.");
                 Scanner scanner = new Scanner(System.in);
                 String userChoice = scanner.nextLine();
                 client.sendString(userChoice);

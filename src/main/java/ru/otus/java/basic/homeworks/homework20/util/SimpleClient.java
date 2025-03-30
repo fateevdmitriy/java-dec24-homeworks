@@ -2,16 +2,16 @@ package ru.otus.java.basic.homeworks.homework20.util;
 
 import java.io.*;
 
-public class simpleClient implements AutoCloseable {
+public class SimpleClient implements AutoCloseable {
     
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
 
-    public simpleClient(InputStream inputStream, OutputStream outputStream) {
+    public SimpleClient(InputStream inputStream, OutputStream outputStream) {
         this.inputStream = new DataInputStream(inputStream);
         this.outputStream = new DataOutputStream(outputStream);
     }
-
+    
     public String receiveString() throws IOException {
         String response = null;
         try {
