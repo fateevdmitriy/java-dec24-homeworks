@@ -25,7 +25,9 @@ public class HomeWork {
             t3.join();
             t4.join();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            System.err.println("Главный поток был прерван");
+            throw new RuntimeException("Ошибка при ожидании завершения потоков", e);
         }
     }
     
@@ -33,7 +35,7 @@ public class HomeWork {
         int quarterArraySize = Math.round((float) doubleArr.length / 4);
         return new Thread(() -> {
             long timeToFill = fillArrayPartOnTime(doubleArr, quarterArraySize * quarterIndex, quarterArraySize * (quarterIndex + 1) - 1);
-            System.out.printf("Время заполнения четверти массива в thread_%s: %s ms.\n", quarterIndex + 1, timeToFill);
+            System.out.printf("Время заполнения четверти массива в thread_%d: %d ms.%n", quarterIndex + 1, timeToFill);
         });
     }
 
