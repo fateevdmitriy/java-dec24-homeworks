@@ -9,18 +9,27 @@ public class HomeWork {
         long timeToFillArray = fillArrayPartOnTime(doubleArray, 0, ARRAY_SIZE - 1);
         System.out.printf("Время заполнения массива в одном main thread : %s ms.\n", timeToFillArray);
 
-        Thread t1 = threadToFillQuarterOfArray(doubleArray, 0);
-        Thread t2 = threadToFillQuarterOfArray(doubleArray, 1);
-        Thread t3 = threadToFillQuarterOfArray(doubleArray, 2);
-        Thread t4 = threadToFillQuarterOfArray(doubleArray, 3);
+        Thread t1 = threadToFillPartOfArray(doubleArray, 0);
+        Thread t2 = threadToFillPartOfArray(doubleArray, 1);
+        Thread t3 = threadToFillPartOfArray(doubleArray, 2);
+        Thread t4 = threadToFillPartOfArray(doubleArray, 3);
 
         t1.start();
         t2.start();
         t3.start();
         t4.start();
-    }
 
-    private static Thread threadToFillQuarterOfArray(double[] doubleArr, int quarterIndex) {
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+            t4.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static Thread threadToFillPartOfArray(double[] doubleArr, int quarterIndex) {
         int quarterArraySize = Math.round((float) doubleArr.length / 4);
         return new Thread(() -> {
             long timeToFill = fillArrayPartOnTime(doubleArr, quarterArraySize * quarterIndex, quarterArraySize * (quarterIndex + 1) - 1);
