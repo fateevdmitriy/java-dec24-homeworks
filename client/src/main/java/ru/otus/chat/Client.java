@@ -34,17 +34,6 @@ public class Client {
 
             Scanner scanner = new Scanner(System.in);
             
-            /*
-            System.out.println("Укажите имя клиента:");
-            String name  = scanner.nextLine();
-            if (!name.isEmpty()) {
-                out.writeUTF("/name "+name);
-                System.out.printf("Имя клиента '%s' отправлено на сервер.\n", name);    
-            } else {
-                System.out.println("Не указано имя клиента, оно останется прежним, по-умолчанию.");
-            }
-            */
-
             while (true) {
                 String message = scanner.nextLine();
                 out.writeUTF(message);

@@ -8,12 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClientHandler {
-    private Socket socket;
-    private Server server;
-    private DataInputStream in;
-    private DataOutputStream out;
+    private final Socket socket;
+    private final Server server;
+    private final DataInputStream in;
+    private final DataOutputStream out;
 
-    private String username;
+    private final String username;
     private static int userCount = 0;
 
     public String getUsername() {
@@ -27,55 +27,54 @@ public class ClientHandler {
         this.out = new DataOutputStream(socket.getOutputStream());
 
         userCount++;
-        username = "user_" + userCount;
+        username = "user" + userCount;
 
         new Thread(() -> {
             try {
-                System.out.printf("Клиент '%s' подключился.\n", username);
-                this.sendMsg("Клиенту задано имя: "+username);
+                System.out.printf("Клиент '%s' подключился.%n", username);
+                sendMsg("Доступные команды: Отправка сообщения клиенту по имени: '/w ИмяКлиента Сообщение'. " +
+                        "Завершение работы клиента: '/exit'. Произвольное сообщение отправится всем клиентам. Имя клиента: " + username);
                 
                 while (true) {
                     String message = in.readUTF();
                     if (message.startsWith("/")) {
-                        
                         String[] elements = message.split(" ");
-                        /*
-                        if (elements[0].equalsIgnoreCase("/name") && elements.length > 1) {
-                            System.out.printf("Клиент %s указал свое имя: %s.\n", username, elements[1]);
-                            username = elements[1];                             
-                        }
-                        */
-                        
-                        if (elements[0].equals("/w") && elements.length > 2) {
-                            ClientHandler targetClient = server.getClientHandlerByClientName(elements[1]);
-                            if (targetClient != null) {
-                                String targetClientName = targetClient.getUsername();
-                                String targetMessage = 
-                                        message.replaceFirst(elements[0], "").replaceFirst(elements[1], "").trim();
-                                targetClient.sendMsg("Сообщение от " + username + ": " + targetMessage);
-                                System.out.printf("Клиент %s отправил сообщение для клиента %s.\n", username, targetClientName);                                
+                        if (elements[0].equals("/w")) {
+                            if (elements.length > 2) {
+                                if (username.equalsIgnoreCase(elements[1])) {
+                                    sendMsg("Попытка отправить сообщение самому себе. Проверьте, что имя адресата указано корректно.");  
+                                    continue;  
+                                }                                  
+                                ClientHandler targetClient = server.getClientHandlerByClientName(elements[1]);
+                                if (targetClient != null) {
+                                    String targetMessage =
+                                            message.replaceFirst(elements[0], "").replaceFirst(elements[1], "").trim();
+                                    targetClient.sendMsg("Сообщение от " + username + ": " + targetMessage);
+                                    sendMsg("Сообщение успешно отправлено клиенту " + elements[1] + ".");
+                                    System.out.printf("Клиент %s передал сообщение клиенту %s.%n", username, elements[1]);
+                                } else {
+                                    sendMsg("Не найден клиент с именем '" + elements[1] + "', невозможно отправить сообщение.");
+                                }
                             } else {
-                                //
+                                sendMsg("Некорретный формат команды. Укажите команду в формате: '/w ИмяКлиента Сообщение'.");
                             }
-                        } else {
-                            //
-                        }
-
-                        if (message.equals("/exit")) {
+                        } else if (elements[0].equals("/exit")) {
                             sendMsg("/exitok");
                             break;
+                        } else {
+                            sendMsg("Неизвестная команда. Введите одну из доступных команд сервера в формате '/команда опции'.");
                         }
                     } else {
                         server.broadcastMessage(username + ": " + message);
                     }
                 }
+                
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 disconnect();
             }
         }).start();
-
     }
 
     public void sendMsg(String message) {

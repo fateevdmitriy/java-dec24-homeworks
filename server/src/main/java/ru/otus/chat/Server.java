@@ -18,22 +18,19 @@ public class Server {
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен на порту " + port);
-
             while (true) {
                 Socket socket = serverSocket.accept();
-                subscribe(new ClientHandler(socket, this));
+                subscribe( new ClientHandler(socket, this) );
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
-    //
     public ClientHandler getClientHandlerByClientName(String clientName) {
-        for (ClientHandler clientHandler : clients) {
-            if (clientHandler.getUsername().equalsIgnoreCase(clientName)) {
-                return clientHandler;
+        for (ClientHandler client : clients) {
+            if (client.getUsername().equalsIgnoreCase(clientName)) {
+                return client;
             }
         }
         return null;         
