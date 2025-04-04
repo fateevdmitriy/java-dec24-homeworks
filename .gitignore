@@ -1,6 +1,8 @@
 ### IntelliJ IDEA ###
+.gitignore
 .idea/
 target/
+*.txt
 *.iws
 *.iml
 *.ipr
