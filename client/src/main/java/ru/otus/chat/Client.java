@@ -10,7 +10,7 @@ public class Client {
     Socket socket = new Socket("localhost", 8189);
     DataOutputStream out = new DataOutputStream(socket.getOutputStream());
     DataInputStream in = new DataInputStream(socket.getInputStream());
-
+    
     public Client() throws IOException {
         try {
             new Thread(() -> {
@@ -19,6 +19,10 @@ public class Client {
                         String message = in.readUTF();
                         if (message.startsWith("/")) {
                             if (message.equals("/exitok")) {
+                                break;
+                            }
+                            if (message.equals("/exitreq")) {
+                                out.writeUTF("/exit");
                                 break;
                             }
                         } else {
@@ -31,9 +35,8 @@ public class Client {
                     disconnect();
                 }
             }).start();
-
-            Scanner scanner = new Scanner(System.in);
             
+            Scanner scanner = new Scanner(System.in);
             while (true) {
                 String message = scanner.nextLine();
                 out.writeUTF(message);
@@ -41,8 +44,8 @@ public class Client {
                     break;
                 }
             }
-            
         } catch (Exception e) {
+            System.out.println("Соединение закрыто сервером.");
             e.printStackTrace();
         }
     }

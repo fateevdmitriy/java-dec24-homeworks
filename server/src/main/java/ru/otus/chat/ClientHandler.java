@@ -4,8 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ClientHandler {
     private final Socket socket;
@@ -14,7 +12,11 @@ public class ClientHandler {
     private final DataOutputStream out;
 
     private final String username;
+    private final UserRole userRole;
     private static int userCount = 0;
+    private static final String ADMIN_INFO = "Административные команды: Отключить клиенту от чата: '/kick ИмяКлиента'. ";
+    private static final String USER_INFO = "Пользовательские команды: Отправка сообщения клиенту по имени: '/w ИмяКлиента Сообщение'." +
+            "Завершение работы клиента: '/exit'. Произвольное сообщение отправится всем клиентам. ";
 
     public String getUsername() {
         return username;
@@ -28,12 +30,22 @@ public class ClientHandler {
 
         userCount++;
         username = "user" + userCount;
+        if (userCount < 2) {
+            userRole = UserRole.ADMINISTRATOR;
+        } else {
+            userRole = UserRole.USER;
+        }
 
         new Thread(() -> {
             try {
-                System.out.printf("Клиент '%s' подключился.%n", username);
-                sendMsg("Доступные команды: Отправка сообщения клиенту по имени: '/w ИмяКлиента Сообщение'. " +
-                        "Завершение работы клиента: '/exit'. Произвольное сообщение отправится всем клиентам. Имя клиента: " + username);
+                System.out.printf("Клиент %s подключился.%n", username);
+                String infoMsg;
+                if (userRole.isAdmin()) {
+                    infoMsg = ADMIN_INFO + USER_INFO + "Имя админа: "+username;
+                } else {
+                    infoMsg = USER_INFO + "Имя пользователя: "+username;
+                }
+                sendMsg(infoMsg);
                 
                 while (true) {
                     String message = in.readUTF();
@@ -42,9 +54,9 @@ public class ClientHandler {
                         if (elements[0].equals("/w")) {
                             if (elements.length > 2) {
                                 if (username.equalsIgnoreCase(elements[1])) {
-                                    sendMsg("Попытка отправить сообщение самому себе. Проверьте, что имя адресата указано корректно.");  
-                                    continue;  
-                                }                                  
+                                    sendMsg("Попытка отправить сообщение самому себе. Проверьте, что имя адресата указано корректно.");
+                                    continue;
+                                }
                                 ClientHandler targetClient = server.getClientHandlerByClientName(elements[1]);
                                 if (targetClient != null) {
                                     String targetMessage =
@@ -53,10 +65,29 @@ public class ClientHandler {
                                     sendMsg("Сообщение успешно отправлено клиенту " + elements[1] + ".");
                                     System.out.printf("Клиент %s передал сообщение клиенту %s.%n", username, elements[1]);
                                 } else {
-                                    sendMsg("Не найден клиент с именем '" + elements[1] + "', невозможно отправить сообщение.");
+                                    sendMsg("Не найден клиент с именем " + elements[1] + ", невозможно отправить сообщение.");
                                 }
                             } else {
                                 sendMsg("Некорретный формат команды. Укажите команду в формате: '/w ИмяКлиента Сообщение'.");
+                            }
+                        } else if (elements[0].equals("/kick")) {
+                            if (userRole.isAdmin() && elements.length == 2) {
+                                if (username.equalsIgnoreCase(elements[1])) {
+                                    sendMsg("Администратор не может отключить от чата самого себя. Проверьте, что имя пользователя " +
+                                            "в команде указано корректно.");
+                                    continue;
+                                }
+                                ClientHandler targetClient = server.getClientHandlerByClientName(elements[1]);
+                                if (targetClient != null) {
+                                    targetClient.sendMsg("Администратор отключил вас от чата.");
+                                    targetClient.sendMsg("/exitreq");
+                                    sendMsg("Клиент " + elements[1] + " отключен по вашему запросу.");
+                                    System.out.printf("Администратор отключил клиента %s от чата.%n", elements[1]);
+                                } else {
+                                    sendMsg("Не найден клиент с именем " + elements[1] + ", невозможно выполнить команду.");
+                                }
+                            } else {
+                                sendMsg("Неразрешенная команда или некорретный формат команды.");
                             }
                         } else if (elements[0].equals("/exit")) {
                             sendMsg("/exitok");
@@ -70,6 +101,7 @@ public class ClientHandler {
                 }
                 
             } catch (IOException e) {
+                System.out.println("ClientHandler exception on read for cliemt: " + username + ".");
                 e.printStackTrace();
             } finally {
                 disconnect();
@@ -113,4 +145,3 @@ public class ClientHandler {
         }
     }
 }
-
