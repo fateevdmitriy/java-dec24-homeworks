@@ -60,7 +60,7 @@ public class ClientHandler {
                                 ClientHandler targetClient = server.getClientHandlerByClientName(elements[1]);
                                 if (targetClient != null) {
                                     String targetMessage =
-                                            message.replaceFirst(elements[0], "").replaceFirst(elements[1], "").trim();
+                                            message.substring(message.indexOf(elements[1]) + elements[1].length()).trim();
                                     targetClient.sendMsg("Сообщение от " + username + ": " + targetMessage);
                                     sendMsg("Сообщение успешно отправлено клиенту " + elements[1] + ".");
                                     System.out.printf("Клиент %s передал сообщение клиенту %s.%n", username, elements[1]);
