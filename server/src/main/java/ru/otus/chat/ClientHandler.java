@@ -99,7 +99,7 @@ public class ClientHandler {
                         server.broadcastMessage(username + ": " + message);
                     }
                 }
-                
+
             } catch (IOException e) {
                 System.out.println("ClientHandler exception on read for cliemt: " + username + ".");
                 e.printStackTrace();

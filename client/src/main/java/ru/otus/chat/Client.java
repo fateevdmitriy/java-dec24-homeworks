@@ -33,7 +33,7 @@ public class Client {
                     e.printStackTrace();
                 }    
             }).start();
-            
+
             Scanner scanner = new Scanner(System.in);
             while (true) {
                 String message = scanner.nextLine();
