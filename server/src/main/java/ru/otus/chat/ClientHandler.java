@@ -34,7 +34,7 @@ public class ClientHandler {
                 System.out.printf("Клиент '%s' подключился.%n", username);
                 sendMsg("Доступные команды: Отправка сообщения клиенту по имени: '/w ИмяКлиента Сообщение'. " +
                         "Завершение работы клиента: '/exit'. Произвольное сообщение отправится всем клиентам. Имя клиента: " + username);
-                
+
                 while (true) {
                     String message = in.readUTF();
                     if (message.startsWith("/")) {
@@ -42,13 +42,13 @@ public class ClientHandler {
                         if (elements[0].equals("/w")) {
                             if (elements.length > 2) {
                                 if (username.equalsIgnoreCase(elements[1])) {
-                                    sendMsg("Попытка отправить сообщение самому себе. Проверьте, что имя адресата указано корректно.");  
-                                    continue;  
-                                }                                  
+                                    sendMsg("Попытка отправить сообщение самому себе. Проверьте, что имя адресата указано корректно.");
+                                    continue;
+                                }
                                 ClientHandler targetClient = server.getClientHandlerByClientName(elements[1]);
                                 if (targetClient != null) {
-                                    String targetMessage =
-                                            message.replaceFirst(elements[0], "").replaceFirst(elements[1], "").trim();
+                                    String targetMessage = 
+                                            message.substring(message.indexOf(elements[1]) + elements[1].length()).trim();
                                     targetClient.sendMsg("Сообщение от " + username + ": " + targetMessage);
                                     sendMsg("Сообщение успешно отправлено клиенту " + elements[1] + ".");
                                     System.out.printf("Клиент %s передал сообщение клиенту %s.%n", username, elements[1]);
@@ -68,7 +68,7 @@ public class ClientHandler {
                         server.broadcastMessage(username + ": " + message);
                     }
                 }
-                
+
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
