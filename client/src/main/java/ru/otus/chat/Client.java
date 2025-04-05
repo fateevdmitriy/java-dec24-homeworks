@@ -7,12 +7,12 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    Socket socket = new Socket("localhost", 8189);
-    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-    DataInputStream in = new DataInputStream(socket.getInputStream());
-    
+``    
     public Client() throws IOException {
-        try {
+        try (Socket socket = new Socket("localhost", 8189);
+             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+             DataInputStream in = new DataInputStream(socket.getInputStream());
+            ){
             new Thread(() -> {
                 try {
                     while (true) {
@@ -31,9 +31,7 @@ public class Client {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                } finally {
-                    disconnect();
-                }
+                }    
             }).start();
             
             Scanner scanner = new Scanner(System.in);
@@ -49,31 +47,5 @@ public class Client {
             e.printStackTrace();
         }
     }
-
-    public void disconnect() {
-        try {
-            if (in != null) {
-                in.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        try {
-            if (out != null) {
-                out.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        try {
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
+    
 }
