@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-``    
+
     public Client() throws IOException {
         try (Socket socket = new Socket("localhost", 8189);
              DataOutputStream out = new DataOutputStream(socket.getOutputStream());
