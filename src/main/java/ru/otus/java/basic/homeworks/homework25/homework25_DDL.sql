@@ -4,6 +4,7 @@ CREATE DATABASE otus_hw25
       CONNECTION LIMIT = -1;
 
 
+
 -- public.tests definition
 CREATE TABLE public.tests (
 	id serial4 NOT NULL,
@@ -19,6 +20,7 @@ VALUES(nextval('tests_id_seq'::regclass), 'Первый тест'),
 	  (nextval('tests_id_seq'::regclass), 'Третий тест');
 
 
+
 -- public.questions definition
 CREATE TABLE public.questions (
 	id serial4 NOT NULL,
@@ -28,7 +30,6 @@ CREATE TABLE public.questions (
 	CONSTRAINT questions_pk PRIMARY KEY (id),
 	CONSTRAINT questions_unique UNIQUE (title)
 );
-CREATE INDEX questions_test_id_idx ON public.questions USING btree (test_id);
 
 -- public.questions foreign keys
 ALTER TABLE public.questions ADD CONSTRAINT questions_tests_fk FOREIGN KEY (test_id) REFERENCES public.tests(id) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -46,14 +47,14 @@ VALUES(nextval('questions_id_seq'::regclass), 'Первый вопрос','Оп�
 	  (nextval('questions_id_seq'::regclass), 'Седьмой вопрос','Описание вопроса 7',3);
 
 
+
 -- public.answers definition
 CREATE TABLE public.answers (
 	id serial4 NOT NULL,
 	essence varchar NOT NULL,
 	iscorrect bool NOT NULL,
-	question_id int8 NOT NULL,
-	CONSTRAINT answers_pk PRIMARY KEY (id),
-	CONSTRAINT answers_unique UNIQUE (essence)
+	question_id int4 NOT NULL,
+	CONSTRAINT answers_pk PRIMARY KEY (id)
 );
 
 -- public.answers foreign keys
@@ -62,7 +63,7 @@ ALTER TABLE public.answers ADD CONSTRAINT answers_questions_fk FOREIGN KEY (ques
 CREATE INDEX answers_essence_idx ON public.answers USING btree (essence);
 CREATE INDEX answers_id_idx ON public.answers USING btree (id);
 CREATE INDEX answers_iscorrect_idx ON public.answers USING btree (iscorrect);
-CREATE INDEX answers_question_id_idx ON public.answers USING btree (question_id);
+CREATE UNIQUE INDEX idx_one_correct_answer_per_question ON public.answers (question_id) WHERE (iscorrect = true);
 
 INSERT INTO public.answers
 (id, "essence", iscorrect, question_id)
@@ -92,8 +93,9 @@ VALUES (nextval('answers_id_seq'::regclass),'Какой-то ответ 1', true
 
 
 --- SQL for check:
-select t.title as test, q.title as question, q.description, a.essence as answer, a.iscorrect
-from tests t
-left join questions q on t.id = q.test_id
-left join answers a on q.id = a.question_id
-order by a.id, q.id, t.id
+
+	select t.title as test, q.title as question, q.description, a.essence as answer, a.iscorrect
+	from tests t
+	left join questions q on t.id = q.test_id
+	left join answers a on q.id = a.question_id
+	order by a.id, q.id, t.id
