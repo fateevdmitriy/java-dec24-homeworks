@@ -94,8 +94,8 @@ VALUES (nextval('answers_id_seq'::regclass),'Какой-то ответ 1', true
 
 
 --- SQL for check:
-	select t.title as test, q.title as question, q.description, a.essence as answer, a.iscorrect
-	from tests t
-	left join questions q on t.id = q.test_id
-	left join answers a on q.id = a.question_id
-	order by a.id, q.id, t.id
+select t.title as test, q.title as question, q.description, a.essence as answer, a.iscorrect
+from tests t
+left join questions q on t.id = q.test_id
+left join answers a on q.id = a.question_id
+order by a.id, q.id, t.id
