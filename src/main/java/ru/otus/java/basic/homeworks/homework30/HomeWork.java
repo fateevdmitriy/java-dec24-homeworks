@@ -1,31 +1,42 @@
 package main.java.ru.otus.java.basic.homeworks.homework30;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class HomeWork {
 
     public static void main(String[] args) {
-        HomeWork homeWork = new HomeWork();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        
         for (int i = 0; i < 5; i++) {
-            executorService.execute(() -> homeWork.printA());
-            executorService.execute(() -> homeWork.printB());
-            executorService.execute(() -> homeWork.printC());
+            Future<String> future1 = executorService.submit(new Callable<String>() {
+            @Override
+            public String call()  {                 
+                    return ("A");
+                }
+            });
+            Future<String> future2 = executorService.submit(new Callable<String>() {
+                @Override
+                public String call()  {
+                    return ("B");
+                }
+            });
+            Future<String> future3 = executorService.submit(new Callable<String>() {
+                @Override
+                public String call()  {
+                    return ("C");
+                }
+            });
+            
+            try {
+                System.out.println(future1.get());
+                System.out.println(future2.get());
+                System.out.println(future3.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
+        
         executorService.shutdown();
-    }
-
-    public synchronized void printA() {
-        System.out.println('A');
-    }
-
-    public synchronized void printB() {
-        System.out.println('B');
-    }
-
-    public synchronized void printC() {
-        System.out.println('C');
     }
 
 }
