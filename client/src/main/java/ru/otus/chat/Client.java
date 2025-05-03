@@ -12,7 +12,9 @@ public class Client {
         try (Socket socket = new Socket("localhost", 8189);
              DataOutputStream out = new DataOutputStream(socket.getOutputStream());
              DataInputStream in = new DataInputStream(socket.getInputStream());
-            ){
+             ){
+            
+            // читаем команды сервера
             new Thread(() -> {
                 try {
                     while (true) {
