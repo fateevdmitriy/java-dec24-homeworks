@@ -9,7 +9,7 @@ public class HomeWork {
     public static void main(String[] args) {
         String userFileName = requestUserForFileAndName();
         if (userFileName == null || userFileName.trim().isEmpty()) {
-            System.out.println("Ошибка: Не задано имя файла для чтения. Завершение работы.");
+            System.err.println("Ошибка: Не задано имя файла для чтения. Завершение работы.");
             return;
         }
         String userSearchStr = requestUserForSearchString();
@@ -23,11 +23,14 @@ public class HomeWork {
             return;
         }
         System.out.println("Выполняется поиск в указанном файле последовательности символов: '" + userSearchStr + "'");
+        /*
         String[] dataStrParts = fileDataStr.split(userSearchStr);
         if (dataStrParts.length < 2) {
             System.out.println("Не найдено ни одного вхождения искомой последовательности символов в указанном файле.");
         }
         int searchStrCount = dataStrParts.length - 1;
+        */
+        int searchStrCount = (fileDataStr.length() - fileDataStr.replace(userSearchStr, "").length()) / userSearchStr.length();
         System.out.println("Количество вхождений искомой последовательности символов в указанном файле: "+searchStrCount);
     }
 
