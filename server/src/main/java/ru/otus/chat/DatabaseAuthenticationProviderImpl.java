@@ -15,8 +15,8 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
                     "join users_to_roles ur on r.id = ur.role_id " +
                     "where user_id = ?";
     private static final String IS_ADMIN_QUERY =
-                    "select count(1) from roles r" +
-                    "join users_to_roles ur on r.id = ur.role_id" +
+                    "select count(1) from roles r " +
+                    "join users_to_roles ur on r.id = ur.role_id " +
                     "where user_id = ? and r.privileged = true";
     private static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/otus-db";
     private final Connection connection;
