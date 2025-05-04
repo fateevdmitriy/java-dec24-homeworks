@@ -56,8 +56,7 @@ public class ClientHandler {
                 String infoMsg = server.getAuthenticationProvider().isUserInAdminRole(userid) ? ADMIN_INFO + USER_INFO + "Имя админа: " + username
                             : USER_INFO + "Имя пользователя: " + username;
                 sendMsg(infoMsg);
-
-                //цикл работы
+                
                 while (authenticated) {
                     String message = in.readUTF();
                     if (message.startsWith("/")) {

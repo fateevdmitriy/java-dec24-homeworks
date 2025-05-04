@@ -11,10 +11,7 @@ public class User {
     private String password;
 
     private List<Role> roles = new ArrayList<>();
-
-    public User() {
-    }
-
+    
     public User(int id, String username, String email, String login, String password) {
         this.id = id;
         this.username = username;
