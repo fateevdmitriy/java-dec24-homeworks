@@ -1,5 +1,7 @@
 package ru.otus.chat;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -9,22 +11,21 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
         private String login;
         private String password;
         private String username;
-        private UserRole userRole;
+        private List<UserRole> userRoles;
 
         public User(String login, String password, String username) {
             this.login = login;
             this.password = password;
             this.username = username;
-            this.userRole = UserRole.USER;
+            this.userRoles = Collections.singletonList(UserRole.USER);
         }
 
-        public User(String login, String password, String username, UserRole userRole) {
+        public User(String login, String password, String username, List<UserRole> userRoles) {
             this.login = login;
             this.password = password;
             this.username = username;
-            this.userRole = userRole;
+            this.userRoles = userRoles;
         }
-        
     }
 
     private Server server;
@@ -42,20 +43,26 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
     }
 
     @Override
-    public UserRole getUserRoleByUsername(String username) {
+    public boolean isUserInAdminRole(String username) {
+        return getUserRolesByUsername(username).stream().anyMatch(UserRole::isAdmin);
+    }
+
+    private void fillUsersAccounts() {
+        this.users.add(new User("user1", "123", "user_1", Collections.singletonList(UserRole.ADMINISTRATOR)));
+        this.users.add(new User("user2", "123", "user_2"));
+        this.users.add(new User("user3", "123", "user_3"));
+    }
+
+    private List<UserRole> getUserRolesByUsername(String username) {
+        List<UserRole> resultList = new ArrayList<>();
         for (User user : users) {
             if (username.equalsIgnoreCase(user.username)) {
-                return user.userRole;
+                resultList = user.userRoles;
+                break;
             }
         }
-        return null;
+        return resultList;
     }
-    
-    private void fillUsersAccounts() {
-        this.users.add(new User("user1", "123", "user_1", UserRole.ADMINISTRATOR));
-        this.users.add(new User("user2", "123", "user_2", UserRole.USER));
-        this.users.add(new User("user3", "123", "user_3", UserRole.USER));
-    } 
     
     private String getUsernameByLoginAndPassword(String login, String password) {
         for (User user : users) {

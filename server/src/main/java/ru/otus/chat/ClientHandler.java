@@ -23,7 +23,7 @@ public class ClientHandler {
         this.server = server;
         this.in = new DataInputStream(socket.getInputStream());
         this.out = new DataOutputStream(socket.getOutputStream());
-        
+
         new Thread(() -> {
             try {
                 System.out.println("Клиент подключился.");
@@ -66,11 +66,10 @@ public class ClientHandler {
                     }
                 }
 
-                UserRole userRole = server.getAuthenticationProvider().getUserRoleByUsername(username);
-                String infoMsg = userRole.isAdmin() ? ADMIN_INFO + USER_INFO + "Имя админа: " + username 
-                                                    : USER_INFO + "Имя пользователя: " + username;
+                String infoMsg = server.getAuthenticationProvider().isUserInAdminRole(username) ? ADMIN_INFO + USER_INFO + "Имя админа: " + username
+                            : USER_INFO + "Имя пользователя: " + username;
                 sendMsg(infoMsg);
-                
+
                 //цикл работы
                 while (authenticated) {
                     String message = in.readUTF();
@@ -96,7 +95,7 @@ public class ClientHandler {
                                 sendMsg("Некорректный формат команды. Укажите команду в формате: '/w ИмяКлиента Сообщение'.");
                             }
                         } else if (elements[0].equals("/kick")) {
-                            if (userRole.isAdmin() && elements.length == 2) {
+                            if (elements.length == 2 && server.getAuthenticationProvider().isUserInAdminRole(username)) {
                                 if (username.equalsIgnoreCase(elements[1])) {
                                     sendMsg("Администратор не может отключить от чата самого себя. Проверьте, что имя пользователя " +
                                             "в команде указано корректно.");
