@@ -9,12 +9,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Server {
     private final int port;
     private List<ClientHandler> clients;
-    private AuthenticationProvider authenticationProvider;
+    private DatabaseAuthenticationProvider authenticationProvider;
 
     public Server(int port) {
         this.port = port;
         clients = new CopyOnWriteArrayList<>();
-        authenticationProvider = new InMemoryAuthenticationProvider(this);
+        authenticationProvider = new DatabaseAuthenticationProviderImpl(this);
     }
 
     public void start() {
@@ -32,7 +32,7 @@ public class Server {
         }
     }
 
-    public AuthenticationProvider getAuthenticationProvider() {
+    public DatabaseAuthenticationProvider getAuthenticationProvider() {
         return authenticationProvider;
     }
 

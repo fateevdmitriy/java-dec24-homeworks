@@ -3,8 +3,11 @@ package ru.otus.chat;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticationProvider {
+    private Server server;
+    private List<User> users;
 
     private static final String USERS_QUERY = "select * from users";
     private static final String USERS_ROLES_QUERY =
@@ -18,13 +21,27 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
     private static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/otus-db";
     private final Connection connection;
 
-    public DatabaseAuthenticationProviderImpl() throws SQLException {
-        connection = DriverManager.getConnection(DATABASE_URL, "admin", "password");
+    public DatabaseAuthenticationProviderImpl(Server server)  {
+       try {
+           connection = DriverManager.getConnection(DATABASE_URL, "admin", "password");
+           this.server = server;
+           this.users = getAllUsers();
+       } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Override
-    public List<User> getAll() {
-        List<User> allUsers = new ArrayList<>();
+    private User getUserByCredentials(String login, String password) {
+        for (User user : users) {
+            if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    private List<User> getAllUsers() {
+        List<User> allUsers = new CopyOnWriteArrayList<>();
 
         try (Statement statement = connection.createStatement()) {
             try (ResultSet rs = statement.executeQuery(USERS_QUERY)) {
@@ -64,7 +81,12 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
     }
 
     @Override
-    public boolean isAdmin(int userId) {
+    public void initialize() {
+        System.out.println("initialize DatabaseAuthenticationProvider");
+    }
+
+    @Override
+    public boolean isUserInAdminRole(int userId) {
         int flag = 0;
         try (PreparedStatement ps = connection.prepareStatement(IS_ADMIN_QUERY)) {
             ps.setInt(1, userId);
@@ -79,4 +101,21 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
         return flag > 0;
     }
 
+    @Override
+    public boolean authenticate(ClientHandler clientHandler, String login, String password) {
+        User authUser = getUserByCredentials(login, password);
+        if (authUser == null) {
+            clientHandler.sendMsg("Некорректный логин/пароль");
+            return false;
+        }
+        if (server.isUsernameBusy(authUser.getUsername())) {
+            clientHandler.sendMsg("Данная учетная запись уже используется.");
+            return false;
+        }
+        clientHandler.setUsername(authUser.getUsername());
+        clientHandler.setUserid(authUser.getId());
+        server.subscribe(clientHandler);
+        clientHandler.sendMsg("/authok " + authUser.getUsername());
+        return true;
+    }
 }

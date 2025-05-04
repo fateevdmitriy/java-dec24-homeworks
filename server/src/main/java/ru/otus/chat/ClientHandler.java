@@ -12,6 +12,7 @@ public class ClientHandler {
     private final DataOutputStream out;
     
     private String username;
+    private int userid;
     private boolean authenticated;
     
     private static final String ADMIN_INFO = "Административные команды: Отключить клиента от чата: '/kick ИмяКлиента'. ";
@@ -27,12 +28,10 @@ public class ClientHandler {
         new Thread(() -> {
             try {
                 System.out.println("Клиент подключился.");
-                
-                //цикл аутентификации
+
                 while (true) {
                     sendMsg("Перед работой с чатом необходимо выполнить аутентификацию " +
-                            "/auth login password \n" +
-                            "или регистрацию /reg login password username");
+                            "/auth login password");
                     String message = in.readUTF();
                     if (message.startsWith("/")) {
                         if (message.equals("/exit")) {
@@ -51,22 +50,10 @@ public class ClientHandler {
                                 break;
                             }
                         }
-                        if (message.startsWith("/reg ")) {
-                            String[] elements = message.split(" ");
-                            if (elements.length != 4) {
-                                sendMsg("Неверный формат команды /reg. Формат команды: /reg login password username");
-                                continue;
-                            }
-                            if (server.getAuthenticationProvider().registration(
-                                    this, elements[1], elements[2], elements[3])) {
-                                authenticated = true;
-                                break;
-                            }
-                        }
                     }
                 }
 
-                String infoMsg = server.getAuthenticationProvider().isUserInAdminRole(username) ? ADMIN_INFO + USER_INFO + "Имя админа: " + username
+                String infoMsg = server.getAuthenticationProvider().isUserInAdminRole(userid) ? ADMIN_INFO + USER_INFO + "Имя админа: " + username
                             : USER_INFO + "Имя пользователя: " + username;
                 sendMsg(infoMsg);
 
@@ -95,7 +82,7 @@ public class ClientHandler {
                                 sendMsg("Некорректный формат команды. Укажите команду в формате: '/w ИмяКлиента Сообщение'.");
                             }
                         } else if (elements[0].equals("/kick")) {
-                            if (elements.length == 2 && server.getAuthenticationProvider().isUserInAdminRole(username)) {
+                            if (elements.length == 2 && server.getAuthenticationProvider().isUserInAdminRole(userid)) {
                                 if (username.equalsIgnoreCase(elements[1])) {
                                     sendMsg("Администратор не может отключить от чата самого себя. Проверьте, что имя пользователя " +
                                             "в команде указано корректно.");
@@ -147,6 +134,14 @@ public class ClientHandler {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public void disconnect() {

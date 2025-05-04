@@ -73,7 +73,7 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
         return null;
     }
 
-    private boolean isLoginAlreadyExist(String login) {
+    private boolean isUserLoginExists(String login) {
         for (User user : users) {
             if (user.login.equals(login)) {
                 return true;
@@ -82,7 +82,7 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
         return false;
     }
 
-    private boolean isUsernameAlreadyExist(String username) {
+    private boolean isUsernameExists(String username) {
         for (User user : users) {
             if (user.username.equals(username)) {
                 return true;
@@ -94,8 +94,6 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
     @Override
     public boolean authenticate(ClientHandler clientHandler, String login, String password) {
         String authUsername = getUsernameByLoginAndPassword(login, password);
-        System.out.println("---> authUsername: "+authUsername);
-        
         if (authUsername == null) {
             clientHandler.sendMsg("Некорректный логин/пароль");
             return false;
@@ -116,11 +114,11 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
             clientHandler.sendMsg("Логин 3+ символа, пароль 3+ символа, имя пользователя 3+ символа");
             return false;
         }
-        if (isLoginAlreadyExist(login)) {
+        if (isUserLoginExists(login)) {
             clientHandler.sendMsg("Указанный логин уже занят");
             return false;
         }
-        if (isUsernameAlreadyExist(username)) {
+        if (isUsernameExists(username)) {
             clientHandler.sendMsg("Указанное имя пользователя уже занято");
             return false;
         }
