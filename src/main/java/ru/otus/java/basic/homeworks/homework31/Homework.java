@@ -1,19 +1,28 @@
 package main.java.ru.otus.java.basic.homeworks.homework31;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Arrays;
 
 public class Homework {
+    private static final Logger logger = LogManager.getLogger(Homework.class);
+    
     public static void main(String[] args) {
+        ArrayChecks arrayChecks = new ArrayChecks();
+        
         int searchInt = 1;
         int[] testArray1 = {3, 6, 1, 0, 1, 7, 10, 1, 4, 9, 2, 5, 8};
         int[] testArray2 = {2, 1, 1, 1, 2, 1};
         System.out.println("Исходный массив: " + Arrays.toString(testArray1));
-        int[] resultArray = getArrayPartRightToLastValueOf(testArray1, searchInt);
+        int[] resultArray = arrayChecks.getArrayPartRightToLastValueOf(testArray1, searchInt);
         System.out.println("Элементы исходного массива, идущие после последней единицы: " + Arrays.toString(resultArray));
         System.out.println("Исходный массив: " + Arrays.toString(testArray2));
-        System.out.println("Проверка состоит ли массив только из 1 и 2: " + isArrayContainsOnlyAllowedValues(testArray2));
+        System.out.println("Проверка состоит ли массив только из 1 и 2: " + arrayChecks.isArrayContainsOnlyAllowedValues(testArray2));
+        logger.info("Завершщение работы.");
     }
 
+    /*
     public static int[] getArrayPartRightToLastValueOf(int[] inArray, int searchValue) {
         int searchPos = -1;
         for (int i = inArray.length - 1; i >= 0; i--) {
@@ -42,5 +51,5 @@ public class Homework {
         }
         return isIntEquals1 && isIntEquals2 && !isIntForbidden;
     }
-
+    */
 }
