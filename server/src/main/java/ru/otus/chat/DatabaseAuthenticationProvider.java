@@ -9,5 +9,7 @@ public interface DatabaseAuthenticationProvider {
     boolean isUserInAdminRole(int userId);
 
     boolean authenticate(ClientHandler clientHandler, String login, String password);
+    
+    void closeConnection();
 
 }

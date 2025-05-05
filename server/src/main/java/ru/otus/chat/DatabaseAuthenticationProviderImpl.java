@@ -118,4 +118,17 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
         clientHandler.sendMsg("/authok " + authUser.getUsername());
         return true;
     }
+
+    @Override
+    public void closeConnection() {
+        try {
+            if (connection != null) {
+                connection.close();                 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
 }
