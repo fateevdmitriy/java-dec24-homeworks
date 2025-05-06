@@ -23,7 +23,7 @@ public class Homework {
         System.out.println("Исходный массив для проверки, что в него входят и 1 и 2 и только они: " + Arrays.toString(testArray2));
         logger.info("Исходный массив для проверки, что в него входят и 1 и 2 и только они: {}", Arrays.toString(testArray2));
         boolean result2 =  arrayChecks.isArrayContainsOnlyAllowedValues(testArray2);
-        System.out.println("Проверка состоит ли массив и 1 и 2 и только их: " + result2);
+        System.out.println("Проверка включает ли массив и 1 и 2 и только их: " + result2);
         logger.info("Результат проверки входного массива, что он состоит только из чисел 1 и 2. Если в массиве присутствуют числа кроме 1 и 2, или нет хотя бы одной единицы или двойки, то проверка не пройдена: {}", result2);
     }
     
