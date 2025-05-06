@@ -7,35 +7,55 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
-    private int port;
+    private final int port;
     private List<ClientHandler> clients;
+    private DatabaseAuthenticationProvider authenticationProvider;
 
     public Server(int port) {
         this.port = port;
         clients = new CopyOnWriteArrayList<>();
+        authenticationProvider = new DatabaseAuthenticationProviderImpl(this);
     }
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен на порту " + port);
+            
+            authenticationProvider.initialize();
             while (true) {
                 Socket socket = serverSocket.accept();
                 subscribe( new ClientHandler(socket, this) );
             }
+            
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            authenticationProvider.closeConnection();
         }
     }
-    
-    public ClientHandler getClientHandlerByClientName(String clientName) {
+
+    public DatabaseAuthenticationProvider getAuthenticationProvider() {
+        return authenticationProvider;
+    }
+
+    public ClientHandler getClientHandlerByUsername(String username) {
         for (ClientHandler client : clients) {
-            if (client.getUsername().equalsIgnoreCase(clientName)) {
+            if (client.getUsername() != null && client.getUsername().equalsIgnoreCase(username)) {
                 return client;
             }
         }
         return null;         
     }
-    
+
+    public boolean isUsernameBusy(String username) {
+        for (ClientHandler client : clients) {
+            if (client.getUsername() != null && client.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void subscribe(ClientHandler clientHandler) {
         clients.add(clientHandler);
     }
@@ -50,4 +70,5 @@ public class Server {
             client.sendMsg(message);
         }
     }
+    
 }
