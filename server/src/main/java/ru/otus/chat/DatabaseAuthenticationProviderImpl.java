@@ -77,7 +77,7 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
             String email = rs.getString(3);
             String login = rs.getString(4);
             String password = rs.getString(5);
-            return new User(id, username, email, login, password);        \
+            return new User(id, username, email, login, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
