@@ -39,20 +39,14 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
         }
         return null;
     }
-
+    
     private List<User> getAllUsers() {
         List<User> allUsers = new CopyOnWriteArrayList<>();
 
         try (Statement statement = connection.createStatement()) {
             try (ResultSet rs = statement.executeQuery(USERS_QUERY)) {
                 while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String username = rs.getString(2);
-                    String email = rs.getString(3);
-                    String login = rs.getString(4);
-                    String password = rs.getString(5);
-                    User newUserByQuery = new User(id, username, email, login, password);
-                    allUsers.add(newUserByQuery);
+                    allUsers.add(mapResultSetToUser(rs));
                 }
             }
         } catch (SQLException e) {
@@ -65,11 +59,7 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
                 List<Role> roleUserByQuery = new ArrayList<>();
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        int id = rs.getInt(1);
-                        String name = rs.getString(2);
-                        boolean privileged = rs.getBoolean(3);
-                        Role currentRole = new Role(id, name, privileged);
-                        roleUserByQuery.add(currentRole);
+                        roleUserByQuery.add(mapResultSetToRole(rs));
                     }
                     currentUser.setRoles(roleUserByQuery);
                 }
@@ -80,6 +70,30 @@ public class DatabaseAuthenticationProviderImpl implements DatabaseAuthenticatio
         return allUsers;
     }
 
+    private User mapResultSetToUser(ResultSet rs) {
+        try {
+            int id = rs.getInt(1);
+            String username = rs.getString(2);
+            String email = rs.getString(3);
+            String login = rs.getString(4);
+            String password = rs.getString(5);
+            return new User(id, username, email, login, password);        \
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Role mapResultSetToRole(ResultSet rs) {
+        try {
+            int id = rs.getInt(1);
+            String name = rs.getString(2);
+            boolean privileged = rs.getBoolean(3);
+            return new Role(id, name, privileged);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     @Override
     public void initialize() {
         System.out.println("initialize DatabaseAuthenticationProvider");
